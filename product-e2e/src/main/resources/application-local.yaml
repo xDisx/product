@@ -1,0 +1,5 @@
+xdisx:
+  service:
+    product:
+      client-name: product-app
+      url: http://localhost:1240

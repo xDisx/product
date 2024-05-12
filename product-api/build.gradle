@@ -1,0 +1,24 @@
+apply plugin: 'java'
+
+group = 'com.xdisx'
+version = '0.1.0-SNAPSHOT'
+
+java {
+    withSourcesJar()
+}
+
+jar {
+    enabled = true
+    archiveClassifier = ''
+}
+
+bootJar {
+    enabled = false
+}
+
+
+dependencies {
+    implementation 'org.springframework:spring-web:6.1.6'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.1.1'
+}
+
