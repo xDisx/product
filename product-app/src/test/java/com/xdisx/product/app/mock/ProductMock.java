@@ -34,7 +34,36 @@ public class ProductMock {
 
     public static ProductResponseDto getProductResponse() {
         return ProductResponseDto.builder()
-                .ID(ID).build();
+                .ID(ID)
+                .productName(PRODUCT_NAME)
+                .description(DESCRIPTION)
+                .compatibility(COMPATIBILITY)
+                .durationOptions(DURATION_OPTIONS).build();
+    }
+
+    public ProductEntity getProductEntity() {
+        ProductCompatibilityEntity compatibility1 = new ProductCompatibilityEntity();
+        compatibility1.setDeviceType(DeviceType.LAPTOP);
+
+        ProductCompatibilityEntity compatibility2 = new ProductCompatibilityEntity();
+        compatibility2.setDeviceType(DeviceType.SMARTPHONE);
+
+        DurationOptionEntity durationOption1 = new DurationOptionEntity();
+        durationOption1.setYears(BigInteger.ONE);
+        durationOption1.setPrice(BigDecimal.ONE);
+
+        DurationOptionEntity durationOption2 = new DurationOptionEntity();
+        durationOption2.setYears(BigInteger.TEN);
+        durationOption2.setPrice(BigDecimal.TEN);
+
+        ProductEntity productEntity = new ProductEntity();
+        productEntity.setId(ID);
+        productEntity.setProductName(PRODUCT_NAME);
+        productEntity.setDescription(DESCRIPTION);
+        productEntity.setCompatibilities(List.of(compatibility1, compatibility2));
+        productEntity.setDurationOptions(List.of(durationOption1, durationOption2));
+
+        return productEntity;
     }
 
     public static ProductEntity getProductEntity(ProductCreateRequestDto requestDto) {
@@ -57,4 +86,8 @@ public class ProductMock {
     }).toList());
     return productEntity;
     };
+
+    public static List<ProductResponseDto> getProductsResponse() {
+        return List.of(getProductResponse());
+    }
 }

@@ -3,6 +3,7 @@ package com.xdisx.product.app.service;
 import com.xdisx.product.api.dto.request.ProductCreateRequestDto;
 import com.xdisx.product.api.dto.response.ProductResponseDto;
 import com.xdisx.product.api.exception.ProductCreateException;
+import com.xdisx.product.api.exception.ProductNotFoundException;
 import com.xdisx.product.app.mock.ProductMock;
 import com.xdisx.product.app.repository.db.ProductRepository;
 import com.xdisx.product.app.repository.db.entity.ProductEntity;
@@ -12,6 +13,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
+
+import java.math.BigInteger;
+import java.util.List;
+import java.util.Optional;
 
 import static com.xdisx.product.app.service.ProductServiceImpl.PRODUCT_SAVE_ERROR;
 import static org.junit.jupiter.api.Assertions.*;
@@ -72,5 +77,38 @@ class ProductServiceImplTest {
                     "Expected createCustomer to throw, but it didn't");
 
     assertEquals(PRODUCT_SAVE_ERROR, thrown.getMessage(), "Exception message does not match");
+  }
+
+  @Test
+  void getProducts() {
+    when(productRepository.findAll()).thenReturn(List.of(ProductMock.getProductEntity()));
+
+    List<ProductResponseDto> products = classUnderTest.getProducts();
+    assertNotNull(products);
+    assertFalse(products.isEmpty());
+    }
+
+  @Test
+  void getProduct() {
+    ProductEntity productEntity = ProductMock.getProductEntity();
+    when(productRepository.findById(productEntity.getId())).thenReturn(Optional.of(productEntity));
+    ProductResponseDto expected = ProductMock.getProductResponse();
+
+    ProductResponseDto productResponseDto = classUnderTest.getProduct(productEntity.getId());
+
+    assertNotNull(productResponseDto);
+    assertEquals(productEntity.getProductName(), productResponseDto.getProductName());
+    }
+
+  @Test
+  void testGetProduct_NotFound() {
+    BigInteger id = BigInteger.ONE;
+    when(productRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(ProductNotFoundException.class, () -> {
+      classUnderTest.getProduct(id);
+    });
+
+    verify(productRepository).findById(id);
   }
 }

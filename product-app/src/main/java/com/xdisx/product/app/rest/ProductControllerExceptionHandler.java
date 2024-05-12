@@ -12,7 +12,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestControllerAdvice(assignableTypes = ProductController.class)
 public class ProductControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(ProductCreateException.class)
+    @ExceptionHandler({ProductCreateException.class, ProductCreateException.class})
     public ResponseEntity<Object> handleProductCreateException(WebRequest r, ProductCreateException e) {
         return setResponse(r, e, HttpStatus.BAD_REQUEST);
     }

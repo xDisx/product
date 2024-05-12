@@ -23,9 +23,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.net.URI;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -38,6 +41,8 @@ class ProductControllerTest {
                   .setDateFormat(new SimpleDateFormat("dd.MM.yyyy"));
   private static final String PRODUCT_PATH = "/xdisx/product";
   private static final String PRODUCT_RESPONSE_JSON = "ProductResponse.json";
+  private static final String PRODUCTS_PATH = "/xdisx/products";
+  private static final String PRODUCTS_RESPONSE_JSON = "ProductsResponse.json";
 
   @Mock
   private ProductService productService;
@@ -81,4 +86,48 @@ class ProductControllerTest {
     var expectedResponse = FileReadUtil.readResourceAsString(PRODUCT_RESPONSE_JSON);
     JSONAssert.assertEquals(expectedResponse, apiResponse, JSONCompareMode.LENIENT);
   }
+
+  @Test
+  void getProducts() throws Exception {
+    List<ProductResponseDto> responseDtos = ProductMock.getProductsResponse();
+    when(productService.getProducts()).thenReturn(responseDtos);
+
+    var apiResponse =
+            mockMvc
+                    .perform(
+                            get(PRODUCTS_PATH)
+                                    .contentType(MediaType.APPLICATION_JSON)
+                                    .accept(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk())
+                    .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                    .andReturn()
+                    .getResponse()
+                    .getContentAsString();
+
+    assertNotNull(apiResponse);
+    var expectedResponse = FileReadUtil.readResourceAsString(PRODUCTS_RESPONSE_JSON);
+    JSONAssert.assertEquals(expectedResponse, apiResponse, JSONCompareMode.LENIENT);
+    }
+
+  @Test
+  void getProduct() throws Exception {
+    ProductResponseDto responseDto = ProductMock.getProductResponse();
+    when(productService.getProduct(responseDto.getID())).thenReturn(responseDto);
+
+    var apiResponse =
+            mockMvc
+                    .perform(
+                            get(PRODUCTS_PATH + "/" + responseDto.getID())
+                                    .contentType(MediaType.APPLICATION_JSON)
+                                    .accept(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk())
+                    .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                    .andReturn()
+                    .getResponse()
+                    .getContentAsString();
+
+    assertNotNull(apiResponse);
+    var expectedResponse = FileReadUtil.readResourceAsString(PRODUCT_RESPONSE_JSON);
+    JSONAssert.assertEquals(expectedResponse, apiResponse, JSONCompareMode.LENIENT);
+    }
 }
