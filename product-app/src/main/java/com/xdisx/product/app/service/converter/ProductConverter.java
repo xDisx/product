@@ -1,5 +1,7 @@
 package com.xdisx.product.app.service.converter;
 
+import com.xdisx.product.api.dto.DeviceTypeDto;
+import com.xdisx.product.api.dto.DurationOptionDto;
 import com.xdisx.product.api.dto.request.ProductCreateRequestDto;
 import com.xdisx.product.api.dto.response.ProductResponseDto;
 import com.xdisx.product.app.repository.db.entity.DeviceType;
@@ -45,6 +47,10 @@ public class ProductConverter {
     public static ProductResponseDto toProductResponse(ProductEntity product) {
         ProductResponseDto productResponseDto = new ProductResponseDto();
         productResponseDto.setID(product.getId());
+        productResponseDto.setProductName(product.getProductName());
+        productResponseDto.setCompatibility(product.getCompatibilities().stream().map(x -> DeviceTypeDto.valueOf(x.getDeviceType().toString())).toList());
+        productResponseDto.setDurationOptions(product.getDurationOptions().stream().map(x -> new DurationOptionDto(x.getYears(), x.getPrice())).toList());
+        productResponseDto.setDescription(product.getDescription());
 
         return productResponseDto;
     }
