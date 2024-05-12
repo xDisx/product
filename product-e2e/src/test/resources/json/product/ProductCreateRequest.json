@@ -1,0 +1,22 @@
+{
+  "productName": "test integration",
+  "description": "test test tet",
+  "compatibility": [
+    "TABLET",
+    "SMARTPHONE"
+  ],
+  "durationOptions": [
+    {
+      "years": "2",
+      "price": "100"
+    },
+    {
+      "years": "3",
+      "price": "169"
+    },
+    {
+      "years": "4",
+      "price": "200"
+    }
+  ]
+}
