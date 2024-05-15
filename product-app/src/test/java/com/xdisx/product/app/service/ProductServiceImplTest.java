@@ -14,6 +14,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -82,7 +84,7 @@ class ProductServiceImplTest {
 
   @Test
   void getProducts() {
-    when(productRepository.findAll()).thenReturn(List.of(ProductMock.getProductEntity()));
+    when(productRepository.findAll(any(Specification.class), any(Sort.class))).thenReturn(List.of(ProductMock.getProductEntity()));
 
     List<ProductResponseDto> products = classUnderTest.getProducts(ProductsRequestDto.builder().build());
     assertNotNull(products);
