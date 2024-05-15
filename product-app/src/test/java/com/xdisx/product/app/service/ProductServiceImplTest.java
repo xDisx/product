@@ -1,5 +1,6 @@
 package com.xdisx.product.app.service;
 
+import com.xdisx.product.api.dto.DeviceTypeDto;
 import com.xdisx.product.api.dto.request.ProductCreateRequestDto;
 import com.xdisx.product.api.dto.request.ProductsRequestDto;
 import com.xdisx.product.api.dto.response.ProductResponseDto;
@@ -86,7 +87,7 @@ class ProductServiceImplTest {
   void getProducts() {
     when(productRepository.findAll(any(Specification.class), any(Sort.class))).thenReturn(List.of(ProductMock.getProductEntity()));
 
-    List<ProductResponseDto> products = classUnderTest.getProducts(ProductsRequestDto.builder().build());
+    List<ProductResponseDto> products = classUnderTest.getProducts(ProductsRequestDto.builder().deviceType(DeviceTypeDto.SMARTPHONE).build());
     assertNotNull(products);
     assertFalse(products.isEmpty());
     }
