@@ -1,6 +1,7 @@
 package com.xdisx.product.app.service;
 
 import com.xdisx.product.api.dto.request.ProductCreateRequestDto;
+import com.xdisx.product.api.dto.request.ProductsRequestDto;
 import com.xdisx.product.api.dto.response.ProductResponseDto;
 import com.xdisx.product.api.exception.ProductCreateException;
 import com.xdisx.product.api.exception.ProductNotFoundException;
@@ -9,8 +10,13 @@ import com.xdisx.product.app.repository.db.entity.ProductEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import com.xdisx.product.app.service.converter.ProductConverter;
+import com.xdisx.product.app.repository.db.filtering.ProductSpecificationBuilder;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -23,6 +29,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
 
     @Override
+    @Transactional
     public ProductResponseDto createProduct(ProductCreateRequestDto productCreateRequestDto) {
         ProductEntity product = ProductConverter.fromCreateRequest(productCreateRequestDto);
 
@@ -31,11 +38,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductResponseDto> getProducts() {
-        return productRepository.findAll().stream().map(ProductConverter::toProductResponse).toList();
+    @Transactional(readOnly = true)
+    public List<ProductResponseDto> getProducts(ProductsRequestDto productsRequest) {
+        Specification<ProductEntity> specifications =
+                ProductSpecificationBuilder.getFilterSpecifications(productsRequest);
+
+        Sort sort = Sort.by(Sort.Direction.DESC, "created");
+
+        return productRepository.findAll(specifications, sort).stream().map(ProductConverter::toProductResponse).toList();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ProductResponseDto getProduct(BigInteger id) {
         ProductEntity product =
                 productRepository

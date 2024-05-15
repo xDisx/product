@@ -2,6 +2,7 @@ package com.xdisx.product.app.rest;
 
 import com.xdisx.product.api.ProductApi;
 import com.xdisx.product.api.dto.request.ProductCreateRequestDto;
+import com.xdisx.product.api.dto.request.ProductsRequestDto;
 import com.xdisx.product.api.dto.response.ProductResponseDto;
 import com.xdisx.product.app.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +24,9 @@ public class ProductController implements ProductApi {
     }
 
     @Override
-    public List<ProductResponseDto> getProducts() {
-        log.info("Get products request received");
-        return productService.getProducts();
+    public List<ProductResponseDto> getProducts(ProductsRequestDto productsRequest) {
+        log.info("Get products request received {}", productsRequest);
+        return productService.getProducts(productsRequest);
     }
 
     @Override
