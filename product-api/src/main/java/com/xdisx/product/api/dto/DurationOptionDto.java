@@ -11,4 +11,5 @@ import java.math.BigInteger;
 public class DurationOptionDto {
     private BigInteger years;
     private BigDecimal price;
+    private BigInteger ID;
 }

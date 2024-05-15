@@ -1,9 +1,11 @@
 package com.xdisx.product.api;
 
 import com.xdisx.product.api.dto.request.ProductCreateRequestDto;
+import com.xdisx.product.api.dto.request.ProductsRequestDto;
 import com.xdisx.product.api.dto.response.ProductResponseDto;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.cloud.openfeign.SpringQueryMap;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +21,7 @@ public interface ProductApi {
 
     @GetMapping(ROOT_PATH+"/products")
     @ResponseStatus(HttpStatus.OK)
-    List<ProductResponseDto> getProducts();
+    List<ProductResponseDto> getProducts( @Valid @SpringQueryMap ProductsRequestDto customerPageRequestDto);
 
     @GetMapping(ROOT_PATH+"/products/{id}")
     @ResponseStatus(HttpStatus.OK)

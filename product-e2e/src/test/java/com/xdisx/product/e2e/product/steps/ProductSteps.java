@@ -1,5 +1,6 @@
 package com.xdisx.product.e2e.product.steps;
 
+import com.xdisx.product.api.dto.request.ProductsRequestDto;
 import com.xdisx.product.api.dto.response.ProductResponseDto;
 import com.xdisx.product.e2e.CucumberBootstrap;
 import com.xdisx.product.e2e.common.utils.AssertionsUtils;
@@ -56,7 +57,7 @@ public class ProductSteps extends CucumberBootstrap {
     }
 
     private ProductResponseDto fetchOrCreateAProduct() {
-        var products = productController.getProducts();
+        var products = productController.getProducts(ProductsRequestDto.builder().build());
         return products.isEmpty() ? createProduct() : products.get(0);
     }
 
@@ -88,7 +89,7 @@ public class ProductSteps extends CucumberBootstrap {
     public void iRequestTheAvailableProducts() {
         getProductsContext = new GetProductsContext();
         try{
-            getProductsContext.setProductResponseDto(productController.getProducts());
+            getProductsContext.setProductResponseDto(productController.getProducts(ProductsRequestDto.builder().build()));
             getProductsContext.setStatus(OK.value());
         }catch (FeignException e) {
             getProductsContext.setException(e);

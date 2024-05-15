@@ -5,5 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.math.BigInteger;
+import java.util.List;
 
-public interface ProductRepository extends JpaRepository<ProductEntity, BigInteger>, JpaSpecificationExecutor<ProductEntity> {}
+public interface ProductRepository extends JpaRepository<ProductEntity, BigInteger>, JpaSpecificationExecutor<ProductEntity> {
+
+}

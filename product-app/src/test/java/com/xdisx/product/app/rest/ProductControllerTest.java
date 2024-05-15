@@ -1,9 +1,9 @@
 package com.xdisx.product.app.rest;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.xdisx.product.api.dto.request.ProductCreateRequestDto;
+import com.xdisx.product.api.dto.request.ProductsRequestDto;
 import com.xdisx.product.api.dto.response.ProductResponseDto;
 import com.xdisx.product.app.mock.ProductMock;
 import com.xdisx.product.app.service.ProductService;
@@ -21,7 +21,6 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -90,7 +89,7 @@ class ProductControllerTest {
   @Test
   void getProducts() throws Exception {
     List<ProductResponseDto> responseDtos = ProductMock.getProductsResponse();
-    when(productService.getProducts()).thenReturn(responseDtos);
+    when(productService.getProducts(ProductsRequestDto.builder().build())).thenReturn(responseDtos);
 
     var apiResponse =
             mockMvc

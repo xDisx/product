@@ -21,7 +21,7 @@ public class ProductMock {
   private static final String DESCRIPTION = "Test product description";
   private static final List<DeviceTypeDto> COMPATIBILITY =
       List.of(DeviceTypeDto.SMARTPHONE, DeviceTypeDto.LAPTOP);
-  private static final List<DurationOptionDto> DURATION_OPTIONS = List.of(new DurationOptionDto(BigInteger.ONE, BigDecimal.ONE));
+  private static final List<DurationOptionDto> DURATION_OPTIONS = List.of(new DurationOptionDto(BigInteger.ONE, BigDecimal.ONE, BigInteger.ONE));
 
     public static ProductCreateRequestDto getCreateProductRequest() {
         return ProductCreateRequestDto.builder()

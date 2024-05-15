@@ -1,6 +1,7 @@
 package com.xdisx.product.app.service;
 
 import com.xdisx.product.api.dto.request.ProductCreateRequestDto;
+import com.xdisx.product.api.dto.request.ProductsRequestDto;
 import com.xdisx.product.api.dto.response.ProductResponseDto;
 import com.xdisx.product.api.exception.ProductCreateException;
 import com.xdisx.product.api.exception.ProductNotFoundException;
@@ -83,7 +84,7 @@ class ProductServiceImplTest {
   void getProducts() {
     when(productRepository.findAll()).thenReturn(List.of(ProductMock.getProductEntity()));
 
-    List<ProductResponseDto> products = classUnderTest.getProducts();
+    List<ProductResponseDto> products = classUnderTest.getProducts(ProductsRequestDto.builder().build());
     assertNotNull(products);
     assertFalse(products.isEmpty());
     }
@@ -92,7 +93,6 @@ class ProductServiceImplTest {
   void getProduct() {
     ProductEntity productEntity = ProductMock.getProductEntity();
     when(productRepository.findById(productEntity.getId())).thenReturn(Optional.of(productEntity));
-    ProductResponseDto expected = ProductMock.getProductResponse();
 
     ProductResponseDto productResponseDto = classUnderTest.getProduct(productEntity.getId());
 
