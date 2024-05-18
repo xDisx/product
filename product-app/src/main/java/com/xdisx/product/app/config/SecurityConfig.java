@@ -23,7 +23,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(request -> "customer-service".equals(request.getHeader("X-Internal-Request"))).permitAll()
+                        .requestMatchers(request -> "contract-service".equals(request.getHeader("X-Internal-Request"))).permitAll()
+                        .requestMatchers(request -> "product-service".equals(request.getHeader("X-Internal-Request"))).permitAll()
                         .requestMatchers("/xdisx/**").authenticated()
                         .anyRequest().permitAll()
                 )
