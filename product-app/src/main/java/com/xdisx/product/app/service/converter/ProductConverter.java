@@ -25,7 +25,6 @@ public class ProductConverter {
         List<ProductCompatibilityEntity> compatibilities = productCreateRequestDto.getCompatibility().stream().map(c -> {
             ProductCompatibilityEntity cmpEntity = new ProductCompatibilityEntity();
             cmpEntity.setDeviceType(DeviceType.valueOf(c.toString()));
-            // Avoid setting product here
             return cmpEntity;
         }).toList();
 
@@ -33,13 +32,11 @@ public class ProductConverter {
             DurationOptionEntity durationOptionEntity = new DurationOptionEntity();
             durationOptionEntity.setYears(d.getYears());
             durationOptionEntity.setPrice(d.getPrice());
-            // Avoid setting product here
             return durationOptionEntity;
         }).toList();
 
-        // Set the relationships after the lists are fully created
-        compatibilities.forEach(cmp -> cmp.setProduct(productEntity)); // Set the product once all are created
-        durationOptions.forEach(dur -> dur.setProduct(productEntity)); // Set the product once all are created
+        compatibilities.forEach(cmp -> cmp.setProduct(productEntity));
+        durationOptions.forEach(dur -> dur.setProduct(productEntity));
 
         productEntity.setCompatibilities(compatibilities);
         productEntity.setDurationOptions(durationOptions);

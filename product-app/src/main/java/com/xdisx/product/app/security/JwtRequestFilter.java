@@ -49,13 +49,11 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                         .getBody();
                 username = claims.getSubject();
             } catch (Exception e) {
-                // Log and handle the exception appropriately
                 logger.error("JWT token validation failed", e);
             }
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            // If token is valid, set the authentication in context
             CustomAuthenticationToken authenticationToken = new CustomAuthenticationToken(username, null, null);
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
